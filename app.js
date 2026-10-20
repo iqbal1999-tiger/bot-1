@@ -22,18 +22,25 @@ form.addEventListener('submit', (event) => {
   const domain = getDomain(value);
 
   if (!domain) {
-    result.innerHTML = 'Please enter a valid URL.';
+    result.textContent = 'Please enter a valid URL.';
     return;
   }
 
   if (!isSupported(domain)) {
-    result.innerHTML = 'This domain is not currently supported by the bot.';
+    result.textContent = 'This domain is not currently supported by the bot.';
     return;
   }
 
-  result.innerHTML = `
-    Supported domain detected: <strong>${domain}</strong>.<br>
-    Send this command to your Telegram bot:<br>
-    <code>/get ${value}</code>
-  `;
+  result.textContent = '';
+
+  const detectedText = document.createElement('p');
+  detectedText.textContent = `Supported domain detected: ${domain}.`;
+
+  const commandText = document.createElement('p');
+  commandText.textContent = 'Send this command to your Telegram bot:';
+
+  const command = document.createElement('code');
+  command.textContent = `/get ${value}`;
+
+  result.append(detectedText, commandText, command);
 });
