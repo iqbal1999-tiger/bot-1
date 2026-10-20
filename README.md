@@ -29,21 +29,37 @@ If a message is sent while the program is not running, it is ignored by the bot,
     cd telegram-publications-downloader
     ```
 
- 4. Configure the `publicationsbot.sh` file accordingly to your needs (see [Configuration section](https://github.com/auino/telegram-publications-downloader#configuration) for more information)
+  4. Configure the bot token and access list (see [Configuration section](https://github.com/auino/telegram-publications-downloader#configuration) for more information)
  5. Run the bot:
 
     ```
-    bash publicationsbot.sh
-    ```
+     cd /home/runner/work/bot-1/bot-1
+     TG_BOT_TOKEN="<your_bot_token>" TG_OPENBOT=0 bash publicationsbot.sh
+     ```
 
 ### Configuration ###
 
 First of all, if you're not familiar with it, consult [official Telegram Bot API](https://core.telegram.org/bots).
 
 The `publicationsbot.sh` program supports configuration of the following parameters:
- * `TOKEN` identifies the Telegram token of your bot
- * `OPENBOT` identifies if the bot is able to reply to anyone (`OPENBOT=1`) or not (`OPENBOT=0`, default and suggested feature, see [Disclaimer section](https://github.com/auino/telegram-publications-downloader#dislaimer))
- * `ALLOWED_CHATIDS` identifies the array of chat identifiers of allowed clients (ignored if `OPENBOT=1`); a good value is for instance `ALLOWED_CHATIDS=("01234" "12345")`
+ * `TG_BOT_TOKEN` (or `TOKEN` in script) identifies the Telegram token of your bot
+ * `TG_OPENBOT` (or `OPENBOT` in script) identifies if the bot is able to reply to anyone (`1`) or not (`0`, default and suggested feature, see [Disclaimer section](https://github.com/auino/telegram-publications-downloader#dislaimer))
+ * `TG_ALLOWED_CHATIDS` (or `ALLOWED_CHATIDS_DEFAULT` in script) identifies the list of allowed clients for closed bots (ignored if `OPENBOT=1`), as comma-separated values, for instance `TG_ALLOWED_CHATIDS="01234,12345"`
+
+Recommended setup for a closed bot:
+1. Start the bot with `TG_OPENBOT=0`.
+2. Send `/id` to your bot and copy your chat identifier.
+3. Restart with your ID in `TG_ALLOWED_CHATIDS`, for example:
+
+   ```
+   cd /home/runner/work/bot-1/bot-1
+   TG_BOT_TOKEN="<your_bot_token>" TG_OPENBOT=0 TG_ALLOWED_CHATIDS="<your_chat_id>" bash publicationsbot.sh
+   ```
+
+Verification:
+ * Send `/start`
+ * Send `/help`
+ * Send `/get <html_url>`
 
 ### Supported services ###
 
