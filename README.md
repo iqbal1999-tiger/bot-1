@@ -37,6 +37,23 @@ If a message is sent while the program is not running, it is ignored by the bot,
      TG_BOT_TOKEN="<your_bot_token>" TG_OPENBOT=0 bash publicationsbot.sh
      ```
 
+### Website ###
+
+A simple static website is included to help users generate valid `/get` commands for supported publication URLs.
+
+Run it locally:
+
+```
+cd /home/runner/work/bot-1/bot-1
+python3 -m http.server 8080
+```
+
+Then open:
+
+```
+http://localhost:8080
+```
+
 ### Configuration ###
 
 First of all, if you're not familiar with it, consult [official Telegram Bot API](https://core.telegram.org/bots).
