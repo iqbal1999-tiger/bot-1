@@ -9,14 +9,20 @@
 # CONFIGURATION BEGIN
 # --- --- --- --- ---
 
-# Your Telegram bot token
-TOKEN='...'
+# Your Telegram bot token (recommended through environment variable TG_BOT_TOKEN)
+TOKEN="${TG_BOT_TOKEN:-...}"
 
-# Should this bot reply to anyone?
-OPENBOT=0
+# Should this bot reply to anyone? (0 recommended, configurable with TG_OPENBOT)
+OPENBOT="${TG_OPENBOT:-0}"
 
 # If closed bot, what chat identifiers are used for filtering?
-ALLOWED_CHATIDS=("")
+# Set TG_ALLOWED_CHATIDS as comma-separated values (example: "12345,67890")
+ALLOWED_CHATIDS_DEFAULT=("")
+if [ -n "${TG_ALLOWED_CHATIDS:-}" ]; then
+	IFS=', ' read -r -a ALLOWED_CHATIDS <<< "${TG_ALLOWED_CHATIDS}"
+else
+	ALLOWED_CHATIDS=("${ALLOWED_CHATIDS_DEFAULT[@]}")
+fi
 
 # --- --- --- --- ---
 #  CONFIGURATION END 
@@ -25,6 +31,16 @@ ALLOWED_CHATIDS=("")
 # Constants
 
 # Telegram API constants
+
+if [ "$TOKEN" = "..." ] || [ -z "$TOKEN" ]; then
+	echo "Missing bot token. Set TG_BOT_TOKEN or edit TOKEN in /home/runner/work/bot-1/bot-1/publicationsbot.sh."
+	exit 1
+fi
+
+if [ "$OPENBOT" != "0" ] && [ "$OPENBOT" != "1" ]; then
+	echo "Invalid OPENBOT value: $OPENBOT (expected 0 or 1)."
+	exit 1
+fi
 
 URL='https://api.telegram.org/bot'$TOKEN
 
@@ -189,4 +205,3 @@ while true; do {
 		process_client&
 	fi
 }; done
-
